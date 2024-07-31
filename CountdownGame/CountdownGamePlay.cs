@@ -13,13 +13,16 @@ public class CountdownGamePlay
     public CountdownGamePlay(Dictionary dictionary)
     {
         _letterBag = new LetterBag();
-        _dictionary = dictionary;
+        _dictionary = dictionary ?? throw new ArgumentNullException(nameof(dictionary));
         _totalScore = 0;
         _currentRound = 0;
     }
 
     public void PlayRound()
     {
+        if (_letterBag == null) throw new InvalidOperationException("LetterBag is not initialized.");
+        if (_dictionary == null) throw new InvalidOperationException("Dictionary is not initialized.");
+
         _currentRound++;
         Console.WriteLine($"Round {_currentRound}");
 
@@ -28,11 +31,11 @@ public class CountdownGamePlay
         {
             Console.Write("Choose 'C' for Consonant or 'V' for Vowel: ");
             char choice = Console.ReadLine().ToUpper()[0];
-            if (choice == 'C')
+            if (choice != null && choice == 'C')
             {
                 letters.Add(_letterBag.GetRandomConsonant());
             }
-            else if (choice == 'V')
+            else if (choice != null && choice == 'V')
             {
                 letters.Add(_letterBag.GetRandomVowel());
             }
